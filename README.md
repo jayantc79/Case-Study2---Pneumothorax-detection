@@ -11,8 +11,10 @@ b) https://www.kaggle.com/jesperdramsch/siim-acrpneumothorax-segmentation-data
 
 Problem Statement: 
 
-We are attempting to a) predict the existence of pneumothorax in our test images and b) indicate the location and
-extent of the condition using masks.
+We are attempting to 
+a) predict the existence of pneumothorax in our test images.  
+
+b) indicate the location and extent of the condition using masks.
 
 1.2 Overview of the problem
 
