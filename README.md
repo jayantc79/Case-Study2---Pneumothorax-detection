@@ -56,7 +56,7 @@ We have dicom tain images, dicom test images, training rle.csv, sample submissio
 
 #### 2.2.1 Types of Deep learning problem
 
-Classification Problem
+Classification & Segmentation Problem
 
 #### 2.2.2. Performance Metric:
 
