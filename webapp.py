@@ -45,7 +45,7 @@ def main():
         uploaded_file  = st.file_uploader("Upload a Image", type=['dcm', 'jpeg', 'png', 'jpg'])
         if uploaded_file is not None:
             st.image(load_image(uploaded_file))
-            st.text("You haven't uploaded image file")
+            st.text("Image has been uploaded")
             # To See Details
             st.write(type(uploaded_file))
             # st.write(dir(image_file))
@@ -56,9 +56,14 @@ def main():
 
 
             st.write("")
-
-            if st.button('predict'):
-                st.write("Result...")
+            
+            submit = st.button('Predict')
+            if submit:
+                
+                if prediction == 0:
+                    st.write('Congratulation',name,'You are not diabetic')
+                else:
+                    st.write(name," we are really sorry to say but it seems like you are Diabetic. But don't lose hope we have suggestions for you:")
 
     elif choice == "Dataset":
         st.subheader("Dataset")
