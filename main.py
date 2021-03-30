@@ -70,14 +70,12 @@ def main():
 
             st.write("")
 
-            if st.button('predict'):
-                st.write("Result...")
-                #predict
-                preds= seg_model.predict(image1)
-                if preds>= 0.5:
-                  out = ('I am {:.2%} percent confirmed that the patient doesnt have Pneumothorax'.format(preds[0][0]))
-                else:
-                  out = ('I am {:.2%} percent confirmed that the patient has Pneumothorax'.format(1-preds[0][0])
+            #predict
+            preds= seg_model.predict(image1)
+            if preds>= 0.5:
+              out = ('I am {:.2%} percent confirmed that the patient doesnt have Pneumothorax'.format(preds[0][0]))
+            else:
+              out = ('I am {:.2%} percent confirmed that the patient has Pneumothorax'.format(1-preds[0][0])
                 
             st.success(out)              
             image = Image.open(image_file)
