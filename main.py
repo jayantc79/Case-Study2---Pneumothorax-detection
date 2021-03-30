@@ -43,15 +43,15 @@ else:
 
  
 
-  hardik_img = image.load_img(temp_file.name, target_size=(500, 500),color_mode='grayscale')
+  img = image.load_img(temp_file.name, target_size=(500, 500),color_mode='grayscale')
 
   # Preprocessing the image
-  pp_hardik_img = image.img_to_array(hardik_img)
-  pp_hardik_img = pp_hardik_img/255
-  pp_hardik_img = np.expand_dims(pp_hardik_img, axis=0)
+  image1 = image.img_to_array(img)
+  image1 = image1/255
+  image1 = np.expand_dims(image1, axis=0)
 
   #predict
-  preds= seg_model.predict(pp_hardik_img)
+  preds= seg_model.predict(image1)
   if preds>= 0.5:
     out = ('I am {:.2%} percent confirmed that Pneumothorax has been detected'.format(preds[0][0]))
   
@@ -60,5 +60,5 @@ else:
 
   st.success(out)
   
-  image = Image.open(temp)
-  st.image(image,use_column_width=True)
+  image1 = Image.open(temp)
+  st.image(image1,use_column_width=True)
