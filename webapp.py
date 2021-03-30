@@ -1,15 +1,26 @@
 import streamlit as st
 import pandas as pd
-from PIL import Image
+from PIL import Image, ImageOps
+from tensorflow.keras.models import Model, load_model
+import tensorflow as tf
+
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 
 
 # Loading the images
-@st.cache
-def load_image(image_file):
-    img = Image.open(image_file)
-    return img
+#@st.cache
+#def load_image(image_file):
+#    img = Image.open(image_file)
+#    return img
+@st.cache(allow_output_mutation=True)
+def load_model():
+    seg_model = 'unet_with_densenet_weights-23-0.4608.hdf5'
+    loaded_model.load_weights(seg_model)
+    loaded_model.summary()  # included to make it visible when model is reloaded
+    #session = K.get_session()
+    return loaded_model
+ 
 
 header = st.beta_container()
 with header:
@@ -40,22 +51,31 @@ def main():
 
     if choice == "Home":
         st.subheader("Home")
-        image_file = st.file_uploader("Upload a dicom Image", type=['dcm', 'jpeg', 'png', 'jpg'])
-        if image_file is not None:
-            st.text("You haven't uploaded image file")
+        uploaded_file  = st.file_uploader("Upload a Image", type=['dcm', 'jpeg', 'png', 'jpg'])
+        if uploaded_file is not None:
+            image = Image.open(uploaded_file)
+            st.image(image, caption='Uploaded Pneumothorax image.', use_column_width=True)
+            st.write("")
+            st.write("Classifying...")
+            # st.image(load_image(uploaded_file))
+            # st.text("You haven't uploaded image file")
             # To See Details
-            st.write(type(image_file))
+            st.write(type(uploaded_file))
             # st.write(dir(image_file))
             file_details = {"Filename": image_file.name,
                             "FileType": image_file.type,
                             "FileSize": image_file.size}
             st.write(file_details)
 
-            st.image(load_image(image_file))
 
             st.write("")
+            model = load_model()
 
             if st.button('predict'):
+                rslt_1 = model.predict(image_pred.reshape(1,224,224,3))
+                rslt = rslt_1.argmax(axis=1)[0]
+                label = "Please consult with your doctor , The patient has Pneumothorax" if rslt == 0 else "Not Pneumothorax"
+                st.warning(label)
                 st.write("Result...")
 
     elif choice == "Dataset":
