@@ -11,14 +11,14 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 @st.cache(allow_output_mutation=True)
 
 def loading_model():
-  fp = "unet_with_densenet_weights-23-0.4608.hdf5"
+  fp = "densenet121_weights-33-0.9072.hdf5"
   model_loader = load_model(fp)
   return model_loader
 
-seg_model = loading_model()
+cnn = loading_model()
 st.write("""
-# Pneumothorax Prediction 
-by Jayant C. :)
+# X-Ray Classification [Pneumonia/Normal]
+by Hardik :)
 """)
 
 
@@ -43,22 +43,22 @@ else:
 
  
 
-  img = image.load_img(temp_file.name, target_size=(500, 500),color_mode='grayscale')
+  hardik_img = image.load_img(temp_file.name, target_size=(500, 500),color_mode='grayscale')
 
   # Preprocessing the image
-  image1 = image.img_to_array(img)
-  image1 = image1/255
-  image1 = np.expand_dims(image1, axis=0)
+  pp_hardik_img = image.img_to_array(hardik_img)
+  pp_hardik_img = pp_hardik_img/255
+  pp_hardik_img = np.expand_dims(pp_hardik_img, axis=0)
 
   #predict
-  preds= seg_model.predict(image1)
-  if preds>= 0.5:
-    out = ('I am {:.2%} percent confirmed that Pneumothorax has been detected'.format(preds[0][0]))
+  hardik_preds= cnn.predict(pp_hardik_img)
+  if hardik_preds>= 0.5:
+    out = ('I am {:.2%} percent confirmed that this is a Pneumonia case'.format(hardik_preds[0][0]))
   
   else: 
-    out = ('I am {:.2%} percent confirmed that No Pneumothorax Detected'.format(1-preds[0][0]))
+    out = ('I am {:.2%} percent confirmed that this is a Normal case'.format(1-hardik_preds[0][0]))
 
   st.success(out)
   
-  image1 = Image.open(temp)
-  st.image(image1,use_column_width=True)
+  image = Image.open(temp)
+  st.image(image,use_column_width=True)
