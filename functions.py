@@ -1,4 +1,3 @@
-import keras
 import numpy as np
 import streamlit as st
 from keras import layers, models, optimizers  # modeling
