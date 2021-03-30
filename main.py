@@ -79,9 +79,9 @@ def main():
                 else:
                   out = ('I am {:.2%} percent confirmed that the patient has Pneumothorax'.format(1-preds[0][0])
                 
-                st.success(out)
-                image = Image.open(image_file)
-                st.image(image,use_column_width=True)
+            st.success(out)              
+            image = Image.open(image_file)
+            st.image(image,use_column_width=True)
 
     elif choice == "Dataset":
         st.subheader("Dataset")
