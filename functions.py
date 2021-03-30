@@ -1,6 +1,5 @@
 import numpy as np
 import streamlit as st
-from keras import layers, models, optimizers  # modeling
 from PIL import Image
 import tensorflow as tf
 from tensorflow.keras import backend as K
