@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 from PIL import Image, ImageOps
-from tensorflow.keras.models import Model, load_model
 import tensorflow as tf
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
@@ -13,13 +12,6 @@ st.set_option('deprecation.showfileUploaderEncoding', False)
 #def load_image(image_file):
 #    img = Image.open(image_file)
 #    return img
-@st.cache(allow_output_mutation=True)
-def load_model():
-    seg_model = 'unet_with_densenet_weights-23-0.4608.hdf5'
-    loaded_model.load_weights(seg_model)
-    loaded_model.summary()  # included to make it visible when model is reloaded
-    #session = K.get_session()
-    return loaded_model
  
 
 header = st.beta_container()
@@ -69,7 +61,6 @@ def main():
 
 
             st.write("")
-            model = load_model()
 
             if st.button('predict'):
                 rslt_1 = model.predict(image_pred.reshape(1,224,224,3))
