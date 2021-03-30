@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from PIL import Image, ImageOps
+import functions
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
@@ -44,6 +45,7 @@ def main():
         st.subheader("Home")
         uploaded_file  = st.file_uploader("Upload a Image", type=['dcm', 'jpeg', 'png', 'jpg'])
         if uploaded_file is not None:
+            p_img = functions.preprocess_image(uploaded_file)
             st.image(load_image(uploaded_file))
             st.text("Image has been uploaded")
             # To See Details
@@ -56,14 +58,28 @@ def main():
 
 
             st.write("")
+            # Loading model
+            loading_msg = st.empty()
+            loading_msg.text("Predicting...")
+            model = functions.load_model()
             
-            submit = st.button('Predict')
-            if submit:
+            # Predicting result
+            prob, prediction = functions.predict(model, p_img)
+            loading_msg.text('')
+            
+            if prediction:
+                st.markdown(unsafe_allow_html=True, body="<span style='color:red; font-size: 50px'><strong><h4>Pneumonia! :slightly_frowning_face:</h4></strong></span>")
+            else:
+                st.markdown(unsafe_allow_html=True, body="<span style='color:green; font-size: 50px'><strong><h3>Healthy! :smile: </h3></strong></span>")
                 
-                if prediction == 0:
-                    st.write('Congratulation!','You do not have Pneumothorax')
-                else:
-                    st.write(" we are really sorry to say but it seems like you have been detected by Pneumothorax")
+            st.text(f"*Probability of pneumonia is {round(prob[0][0] * 100, 2)}%")
+            #submit = st.button('Predict')
+            #if submit:
+                
+                #if prediction == 0:
+                    #st.write('Congratulation!','You do not have Pneumothorax')
+                #else:
+                    #st.write(" we are really sorry to say but it seems like you have been detected by Pneumothorax")
 
     elif choice == "Dataset":
         st.subheader("Dataset")
