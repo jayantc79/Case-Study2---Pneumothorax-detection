@@ -46,14 +46,14 @@ def main():
         uploaded_file  = st.file_uploader("Upload a Image", type=['dcm', 'jpeg', 'png', 'jpg'])
         if uploaded_file is not None:
             p_img = functions.preprocess_image(uploaded_file)
-            st.image(load_image(uploaded_file))
+            st.image(load_image(p_img))
             st.text("Image has been uploaded")
             # To See Details
-            st.write(type(uploaded_file))
+            st.write(type(p_img))
             # st.write(dir(image_file))
-            file_details = {"Filename": uploaded_file.name,
-                            "FileType": uploaded_file.type,
-                            "FileSize": uploaded_file.size}
+            file_details = {"Filename": p_img.name,
+                            "FileType": p_img.type,
+                            "FileSize": p_img.size}
             st.write(file_details)
 
 
