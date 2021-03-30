@@ -61,9 +61,9 @@ def main():
             if submit:
                 
                 if prediction == 0:
-                    st.write('Congratulation',name,'You are not diabetic')
+                    st.write('Congratulation!','You do not have Pneumothorax')
                 else:
-                    st.write(name," we are really sorry to say but it seems like you are Diabetic. But don't lose hope we have suggestions for you:")
+                    st.write(" we are really sorry to say but it seems like you have been detected by Pneumothorax")
 
     elif choice == "Dataset":
         st.subheader("Dataset")
