@@ -1,6 +1,6 @@
 import streamlit as st
 import numpy as np
-import functions
+import function
 from PIL import Image
 
 # App Title
