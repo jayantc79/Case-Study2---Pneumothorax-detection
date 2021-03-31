@@ -26,52 +26,44 @@ def load_model():
   #model = tf.keras.models.load_model("seg_model", compile=True)
 
   #return model
+def predict(X,Y):
+  img = tf.io.read_file(X)
+  image = tf.image.decode_png(img)
+  image = tf.image.convert_image_dtype(image, tf.float32)#converting the image to tf.float32
+  image=tf.squeeze(image,[0]) #squeezing the image because the file is of the shape(1,1024,1024,1)and we want (1024,1024,3)
+  b = tf.constant([1,1,3], tf.int32)
+  image=tf.tile(image,b)#the image is of the shape (1024,1024,1) to make it (1024,1024,3) and for this using tf.tile
+  image=tf.image.resize(image,size=[256,256])
+  image=tf.expand_dims(image,axis=0)
+  if Y!=" -1":
+    print("Ground truth of Classification is 1(Has Pneumothorax)")
+    print('*'*100)
+  else:
+    print("Ground truth of Classification is 0(Does not have Pneumothorax)")
+    print("Ground truth of Segmentation -- There is no mask")
+    print('*'*100)
 
-def predict(file):
-    delete_flag = False
-    extension = os.path.splitext(file)[1] 
-    if extension == '.dcm':
-        dataset = pydicom.dcmread(file)
-        d = {}
-        d['patientID'] = dataset.PatientID
-        d['age'] = dataset.PatientAge
-        d['sex'] = dataset.PatientSex
-        d['view_position'] = dataset.ViewPosition
-        d['pixel_spacing']  = dataset.PixelSpacing
-        d["modality"] = dataset.Modality
-        d["body_part_examined"] =  dataset.BodyPartExamined
-        df_meta = pd.DataFrame(d)
-        st.subheader('Metadata info stored in the file')
-        st.write(df_meta.drop_duplicates())
-        file = file[:-4] + ".png"
-        delete_flag = True
-        cv2.imwrite(file,dataset.pixel_array)
-    # Create a text element and let the reader know status.
-    state = st.text('Loading Saved Model...')
-    model_seg = load_model()
-    state.text('Model loading done!')                                                                        
-    img = tf.io.read_file(file)
-    img = tf.image.decode_png(img, channels= N_CHANNELS)
-    img = tf.image.convert_image_dtype(img, tf.float32) 
-    img = tf.image.resize(img, [IMG_WIDTH, IMG_HEIGHT]) 
-    img.set_shape((IMG_HEIGHT,IMG_WIDTH,3))
-    state.text('Predicting...') 
-    pred_mask= model_seg.predict(tf.expand_dims(img,axis=0)).reshape((IMG_HEIGHT,IMG_WIDTH)) 
-    pred_mask = cv2.resize(pred_mask,(1024,1024))
-    pred_mask = (pred_mask > .5).astype(int)
-    img = cv2.resize(img.numpy(),(1024,1024))
-    col1, col2,col3 = st.beta_columns(3)
-    col1.header("Original")
-    col1.image(img, use_column_width=True)
-    col2.header("Prediction")
-    col2.image(pred_mask*255, use_column_width=True)
-    state.text('Prediction Done')
-    fig = plt.figure()
-    ax = fig.add_subplot(1,1,1) 
-    ax.imshow(img)
-    ax.imshow(pred_mask,alpha=0.5,cmap='Reds')
-    plt.axis('off')
-    col3.header("Merged")
-    col3.write(fig)
-    if delete_flag:
-        os.remove(file)
+    
+  if model.predict(image)>=0.5:
+    print("Pneumothorax has been detected")
+    mask=final.predict(image)
+    mask=(mask>0.5).astype(np.uint8)
+    try:
+      true_mask=Image.fromarray(mask_functions.rle2mask(Y,1024,1024).T).resize((256,256), resample=Image.BILINEAR)
+      true_mask=np.array(true_mask)
+      plt.figure(figsize=(20,6))
+      plt.subplot(121)
+      plt.title("X-ray image with mask(Ground truth)")
+      plt.imshow(np.squeeze(image),cmap='gray')
+      plt.imshow(np.squeeze(true_mask),cmap='gray',alpha=0.3)
+      plt.subplot(122)
+      plt.title("X-ray image with mask(Predicted)")
+      plt.imshow(np.squeeze(image),cmap='gray')
+      plt.imshow(np.squeeze(mask),cmap='gray',alpha=0.3)
+      return plt.show()
+    except: #if there is no ground truth mask
+      plt.figure(figsize=(20,6))
+      plt.title("X-ray image with mask(Predicted)")
+      plt.imshow(np.squeeze(image),cmap='gray')
+      plt.imshow(np.squeeze(mask),cmap='gray',alpha=0.3)
+      return plt.show()
