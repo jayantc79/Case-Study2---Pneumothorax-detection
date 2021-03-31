@@ -3,3 +3,4 @@ pillow
 numpy
 streamlit
 Keras
+cv2
