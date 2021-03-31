@@ -1,18 +1,15 @@
 import streamlit as st
 import pandas as pd
-from PIL import Image, ImageOps
-from functions import functions
-
+from PIL import Image
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
 
 
 # Loading the images
 @st.cache
-def load_image(uploaded_file):
-    img = Image.open(uploaded_file)
+def load_image(image_file):
+    img = Image.open(image_file)
     return img
- 
 
 header = st.beta_container()
 with header:
@@ -43,28 +40,23 @@ def main():
 
     if choice == "Home":
         st.subheader("Home")
-        uploaded_file  = st.file_uploader("Upload a Image", type=['dcm', 'jpeg', 'png', 'jpg'])
-        if uploaded_file is not None:
-            st.image(load_image(uploaded_file))
-            st.text("Image has been uploaded")
+        image_file = st.file_uploader("Upload a dicom Image", type=['dcm', 'jpeg', 'png', 'jpg'])
+        if image_file is not None:
+            st.text("You haven't uploaded image file")
             # To See Details
-            st.write(type(uploaded_file))
+            st.write(type(image_file))
             # st.write(dir(image_file))
-            file_details = {"Filename": uploaded_file.name,
-                            "FileType": uploaded_file.type,
-                            "FileSize": uploaded_file.size}
+            file_details = {"Filename": image_file.name,
+                            "FileType": image_file.type,
+                            "FileSize": image_file.size}
             st.write(file_details)
 
+            st.image(load_image(image_file))
 
             st.write("")
-            
-            submit = st.button('Predict')
-            if submit:
-                
-                if prediction == 0:
-                    st.write('Congratulation!','You do not have Pneumothorax')
-                else:
-                    st.write(" we are really sorry to say but it seems like you have been detected by Pneumothorax")
+
+            if st.button('predict'):
+                st.write("Result...")
 
     elif choice == "Dataset":
         st.subheader("Dataset")
