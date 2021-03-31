@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 from PIL import Image, ImageOps
-import functions
+from functions import functions
 
 st.set_option('deprecation.showfileUploaderEncoding', False)
 
