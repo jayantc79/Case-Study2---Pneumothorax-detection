@@ -16,9 +16,9 @@ with header:
     st.title("Welcome to my Project - Pneumothorax Prediction App")
 
     st.markdown(unsafe_allow_html=True, body="<p>Welcome to Pneumothorax Prediction APP.</p>"
-                                             "<p>This is a basic app built with Streamlit."
+                                             "<p>This is a application built with Streamlit."
                                              "With this app, you can upload a Chest X-Ray image and predict if the patient "
-                                             "from that image suffers pneumonia or not.</p>"
+                                             "from that image suffers pneumothorax or not.</p>"
                                              "<p>The model used is a Convolutional Neural Network (CNN)")
 
 
