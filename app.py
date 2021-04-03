@@ -6,6 +6,7 @@ from tensorflow.keras.optimizers import RMSprop
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from PIL import Image, ImageOps
 import numpy as np
+from classify import teachable_machine_classification
 
 
 def teachable_machine_classification(img, file):
