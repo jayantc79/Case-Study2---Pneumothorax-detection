@@ -59,7 +59,7 @@ if uploaded_file is not None:
     st.image(image, caption='Uploaded a X Ray IMage.', use_column_width=True)
     st.write("")
     st.write("Classifying a X Ray Image - Normal Vs Pneumonia.........hold tight")
-    label = teachable_machine_classification(image, 'D:\SIIM- Pneuomothorax segmentation\New folder (2)\converted_keras\keras_model.h5')
+    label = teachable_machine_classification(image, r'D:\SIIM- Pneuomothorax segmentation\New folder (2)\converted_keras\keras_model.h5')
     if label == 1:
         st.write("This X ray looks like having pneumonia.It has abnormal opacification.Needs further investigation by a Radiologist/Doctor.")
     else:
