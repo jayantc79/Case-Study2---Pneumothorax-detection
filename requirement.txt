@@ -4,3 +4,4 @@ numpy
 streamlit
 Keras
 cv2
+matplotlib
