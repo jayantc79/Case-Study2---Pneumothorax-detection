@@ -61,3 +61,10 @@ Classification & Segmentation Problem
 #### 2.2.2. Performance Metric:
 
 Dice coef or F1-score
+
+## 3. Blog link
+https://jayantchaudhari.medium.com/siim-acr-medical-chest-x-ray-segmentation-by-deep-learning-4bc9fdb4659
+
+## 4. Deployment video link
+https://www.youtube.com/watch?v=YQjKcl0CQD8
+
